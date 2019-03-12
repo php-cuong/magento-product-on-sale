@@ -34,15 +34,23 @@ class OnSale
     protected $productFactory;
 
     /**
+     * @var \Magento\Framework\Stdlib\DateTime\Timezone
+     */
+    protected $dateTimeFormater;
+
+    /**
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param \Magento\Catalog\Model\ProductFactory $productFactory
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone $dateTimeFormater
      */
     public function __construct(
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
-        \Magento\Catalog\Model\ProductFactory $productFactory
+        \Magento\Catalog\Model\ProductFactory $productFactory,
+        \Magento\Framework\Stdlib\DateTime\Timezone $dateTimeFormater
     ) {
         $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->productFactory = $productFactory;
+        $this->dateTimeFormater = $dateTimeFormater;
     }
 
     /**
@@ -53,7 +61,7 @@ class OnSale
      */
     public function getProductOnSale($product)
     {
-        $now = date('Y-m-d H:m:s');
+        $now = $this->dateTimeFormater->date();
         $isOnSale = 1;
 
         $productType = $product->getTypeId();
